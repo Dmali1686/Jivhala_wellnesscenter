@@ -43,7 +43,7 @@ const MOCK_STORIES = [
 ];
 
 export default function SuccessStories() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language || 'mr';
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('All');
@@ -92,10 +92,10 @@ export default function SuccessStories() {
       </Helmet>
 
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-3">Transformations</h1>
+        <h1 className="text-3xl font-bold mb-3">{t('successStories.title')}</h1>
         <p className="text-[#4a4a4a] text-sm">
-          Real stories of radical calm and vitality. <br/>
-          <span className="italic text-xs text-gray-400 mt-1 inline-block">*Individual results may vary.</span>
+          {t('successStories.subtitle')} <br/>
+          <span className="italic text-xs text-gray-400 mt-1 inline-block">{t('successStories.disclaimer')}</span>
         </p>
       </div>
 
@@ -115,17 +115,17 @@ export default function SuccessStories() {
               <div className="flex gap-2 aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100">
                 <div className="w-1/2 relative group h-full">
                   <img src={story.beforeImage} alt="Before" className="w-full h-full object-cover grayscale opacity-80" />
-                  <span className="absolute bottom-2 left-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-sm">Before</span>
+                  <span className="absolute bottom-2 left-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded-full backdrop-blur-sm">{t('home.before')}</span>
                 </div>
                 <div className="w-1/2 relative h-full">
                   <img src={story.afterImage} alt="After" className="w-full h-full object-cover" />
-                  <span className="absolute bottom-2 right-2 bg-white/80 text-black text-[10px] px-2 py-1 rounded-full backdrop-blur-sm font-semibold">After</span>
+                  <span className="absolute bottom-2 right-2 bg-white/80 text-black text-[10px] px-2 py-1 rounded-full backdrop-blur-sm font-semibold">{t('home.after')}</span>
                 </div>
               </div>
               <div className="px-2 pb-2">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="font-bold">{story.name}</h3>
-                  <span className="bg-[#eaf5eb] text-[#006400] text-[10px] font-bold px-2 py-1 rounded-full">{story.goal}</span>
+                  <span className="bg-[#eaf5eb] text-[#006400] text-[10px] font-bold px-2 py-1 rounded-full">{t(`successStories.goals.${story.goal}`)}</span>
                 </div>
                 <p className="text-sm text-[#4a4a4a] line-clamp-2 leading-relaxed">
                   "{story.story}"
@@ -171,12 +171,12 @@ export default function SuccessStories() {
               
               <div className="px-6 pb-8 -mt-6">
                 <h2 className="text-2xl font-bold mb-1">{selectedStory.name}</h2>
-                <p className="text-[#006400] font-semibold text-sm mb-6">{selectedStory.goal} Transformation</p>
+                <p className="text-[#006400] font-semibold text-sm mb-6">{t(`successStories.goals.${selectedStory.goal}`)} {t('successStories.title')}</p>
                 
                 <div className="flex flex-col sm:flex-row gap-2 mb-6">
                   <div className="relative w-full sm:w-1/2 flex items-center justify-center bg-gray-100 rounded-2xl overflow-hidden p-2">
                     <img src={selectedStory.beforeImage} alt="Before" className="w-full h-auto max-h-[60vh] object-contain grayscale opacity-90 rounded-xl" />
-                    <span className="absolute top-4 left-4 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm z-10">Before</span>
+                    <span className="absolute top-4 left-4 bg-black/70 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm z-10">{t('home.before')}</span>
                     {selectedStory.beforeWeight && (
                       <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-3xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] tracking-wider z-10">
                         {selectedStory.beforeWeight} kg
@@ -185,7 +185,7 @@ export default function SuccessStories() {
                   </div>
                   <div className="relative w-full sm:w-1/2 flex items-center justify-center bg-gray-100 rounded-2xl overflow-hidden p-2">
                     <img src={selectedStory.afterImage} alt="After" className="w-full h-auto max-h-[60vh] object-contain rounded-xl" />
-                    <span className="absolute top-4 right-4 bg-[#006400] text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm font-bold shadow-sm z-10">After</span>
+                    <span className="absolute top-4 right-4 bg-[#006400] text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm font-bold shadow-sm z-10">{t('home.after')}</span>
                     {selectedStory.afterWeight && (
                       <span className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white text-3xl font-black drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] tracking-wider z-10">
                         {selectedStory.afterWeight} kg

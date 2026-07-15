@@ -46,6 +46,37 @@ const resources = {
           }
         }
       },
+      successStories: {
+        title: "Transformations",
+        subtitle: "Real stories of radical calm and vitality.",
+        disclaimer: "*Individual results may vary.",
+        goals: {
+          Lifestyle: "Lifestyle",
+          "Weight Loss": "Weight Loss",
+          Nutrition: "Nutrition"
+        }
+      },
+      register: {
+        heroTitle: "Start Your Wellness Journey Today",
+        heroDesc: "Join thousands of others who have transformed their lives with our holistic approach to health, nutrition, and lifestyle.",
+        trustedBy: "Trusted by 500+ clients",
+        formTitle: "Free Health Check & More",
+        formDesc: "Kindly contact with us by filling out the form below to book your free holistic wellness consultation.",
+        fullName: "Full Name",
+        namePlaceholder: "Jane Doe",
+        mobileNumber: "Mobile Number",
+        emailLabel: "Email",
+        optional: "(Optional)",
+        emailPlaceholder: "jane@example.com",
+        consent: "I agree to be contacted by Jivhala Wellness Center via phone or email regarding my consultation. I understand that individual results vary.",
+        buttonText: "Request Consultation",
+        buttonSubmitting: "Submitting...",
+        successTitle: "Request Received",
+        successDesc: "Thank you for reaching out. One of our expert wellness coaches will contact you shortly to schedule your free consultation.",
+        returnHome: "Return to Home",
+        errorExists: "A request with this mobile number already exists.",
+        errorSubmit: "Failed to submit request. Please try again later."
+      },
       whatsapp: {
         title: "Jivhala Support",
         tooltip: "Hi! 👋 How can we help you with your wellness journey today?",
@@ -95,6 +126,37 @@ const resources = {
             feedback: "जीवनशैलीतील बदल खूप हळूहळू आणि अंमलात आणण्यास सोपे होते. मी एखाद्या 'प्रोग्राम'वर आहे असे मला वाटलेच नाही, उलट मी चांगले कसे जगावे हे शिकत आहे असे वाटले. माझी ऊर्जा आता खूप वाढली आहे."
           }
         }
+      },
+      successStories: {
+        title: "परिवर्तन",
+        subtitle: "उत्कट शांतता आणि चैतन्याच्या खऱ्या यशोगाथा.",
+        disclaimer: "*वैयक्तिक परिणाम भिन्न असू शकतात.",
+        goals: {
+          Lifestyle: "जीवनशैली",
+          "Weight Loss": "वजन कमी करणे",
+          Nutrition: "पोषण"
+        }
+      },
+      register: {
+        heroTitle: "तुमचा वेलनेस प्रवास आजच सुरू करा",
+        heroDesc: "आरोग्य, पोषण आणि जीवनशैलीकडे आमच्या सर्वांगीण दृष्टिकोनातून आपले जीवन बदलणाऱ्या हजारो लोकांमध्ये सामील व्हा.",
+        trustedBy: "५००+ ग्राहकांचा विश्वास",
+        formTitle: "मोफत आरोग्य तपासणी आणि बरेच काही",
+        formDesc: "तुमच्या मोफत सर्वांगीण वेलनेस कन्सल्टेशनसाठी कृपया खालील फॉर्म भरून आमच्याशी संपर्क साधा.",
+        fullName: "पूर्ण नाव",
+        namePlaceholder: "उदा. रमेश पाटील",
+        mobileNumber: "मोबाईल क्रमांक",
+        emailLabel: "ईमेल",
+        optional: "(पर्यायी)",
+        emailPlaceholder: "ramesh@example.com",
+        consent: "माझ्या कन्सल्टेशनसंदर्भात फोन किंवा ईमेलद्वारे जिव्हाळा वेलनेस सेंटरने माझ्याशी संपर्क साधण्यास माझी संमती आहे. मला समजते की वैयक्तिक परिणाम भिन्न असू शकतात.",
+        buttonText: "कन्सल्टेशनची विनंती करा",
+        buttonSubmitting: "सबमिट करत आहे...",
+        successTitle: "विनंती प्राप्त झाली",
+        successDesc: "संपर्क साधल्याबद्दल धन्यवाद. आमचे एक तज्ज्ञ वेलनेस कोच तुमच्या मोफत कन्सल्टेशनचे नियोजन करण्यासाठी लवकरच तुमच्याशी संपर्क साधतील.",
+        returnHome: "मुख्यपृष्ठावर परत जा",
+        errorExists: "या मोबाईल क्रमांकावरील विनंती आधीपासूनच अस्तित्वात आहे.",
+        errorSubmit: "विनंती सबमिट करण्यात अयशस्वी. कृपया नंतर पुन्हा प्रयत्न करा."
       },
       whatsapp: {
         title: "जिव्हाळा सपोर्ट",

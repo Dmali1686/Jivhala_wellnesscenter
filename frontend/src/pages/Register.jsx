@@ -8,6 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import { Leaf, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { API_BASE_URL } from '../config';
+import { useTranslation } from 'react-i18next';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -19,6 +20,7 @@ const formSchema = z.object({
 });
 
 export default function Register() {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
@@ -44,9 +46,9 @@ export default function Register() {
       toast.success('Consultation requested successfully!');
     } catch (error) {
       if (error.response?.status === 400 || error.response?.status === 409) {
-        toast.error('A request with this mobile number already exists.');
+        toast.error(t('register.errorExists'));
       } else {
-        toast.error('Failed to submit request. Please try again later.');
+        toast.error(t('register.errorSubmit'));
       }
     } finally {
       setIsSubmitting(false);
@@ -55,96 +57,140 @@ export default function Register() {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
-        <div className="w-20 h-20 bg-green-100 text-[#006400] rounded-full flex items-center justify-center mb-6">
-          <Leaf size={40} />
-        </div>
-        <h2 className="text-3xl font-bold mb-4">Request Received</h2>
-        <p className="text-[#4a4a4a] mb-8 max-w-md mx-auto leading-relaxed">
-          Thank you for reaching out. One of our expert wellness coaches will contact you shortly to schedule your free consultation.
-        </p>
-        <button 
-          onClick={() => window.location.href = '/'}
-          className="text-[#006400] font-semibold flex items-center gap-2 hover:underline"
+      <div className="min-h-[80vh] flex items-center justify-center bg-gradient-to-br from-[#f3f9f3] via-white to-[#eaf5eb] p-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white max-w-lg w-full rounded-3xl shadow-xl p-10 flex flex-col items-center text-center border border-gray-50"
         >
-          Return to Home <ArrowRight size={16} />
-        </button>
+          <div className="w-24 h-24 bg-gradient-to-br from-green-100 to-green-200 text-[#006400] rounded-full flex items-center justify-center mb-6 shadow-sm">
+            <Leaf size={48} />
+          </div>
+          <h2 className="text-3xl font-bold mb-4 text-gray-900">{t('register.successTitle')}</h2>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+            {t('register.successDesc')}
+          </p>
+          <button 
+            onClick={() => window.location.href = '/'}
+            className="bg-[#006400] hover:bg-[#004d00] text-white px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition-colors shadow-md hover:shadow-lg"
+          >
+            {t('register.returnHome')} <ArrowRight size={18} />
+          </button>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="px-6 py-8 max-w-md mx-auto">
+    <div className="min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-[#f3f9f3] via-white to-[#eaf5eb] p-4 sm:p-8">
       <Helmet>
         <title>Book Consultation - Jivhala</title>
       </Helmet>
 
-      <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold mb-3 tracking-tight">Begin Your Journey</h1>
-        <p className="text-[#4a4a4a] text-sm">
-          Fill out the form below to book a free holistic wellness consultation.
-        </p>
+      <div className="max-w-5xl w-full bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
+        {/* Left Side: Modern Graphic/Text */}
+        <div className="w-full md:w-5/12 bg-gradient-to-br from-[#006400] to-[#004d00] text-white p-10 flex flex-col justify-between relative overflow-hidden">
+          {/* Abstract decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3 blur-xl"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-1/3 -translate-x-1/4 blur-xl"></div>
+          
+          <div className="relative z-10 flex flex-col h-full justify-between">
+            <div>
+              <div className="bg-white/20 backdrop-blur-sm w-12 h-12 rounded-2xl flex items-center justify-center mb-8 shadow-inner">
+                <Leaf className="text-white" size={24} />
+              </div>
+              <h2 className="text-4xl font-bold mb-6 leading-tight drop-shadow-md">{t('register.heroTitle')}</h2>
+              <p className="text-green-50 text-lg mb-8 leading-relaxed opacity-90">
+                {t('register.heroDesc')}
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-4 bg-black/10 p-4 rounded-2xl backdrop-blur-sm border border-white/10 mt-8">
+              <div className="flex -space-x-3">
+                 <div className="w-10 h-10 rounded-full bg-[#eaf5eb] border-2 border-[#006400] flex items-center justify-center text-[#006400] font-bold text-xs shadow-sm">DM</div>
+                 <div className="w-10 h-10 rounded-full bg-[#d5ecd8] border-2 border-[#006400] flex items-center justify-center text-[#006400] font-bold text-xs shadow-sm">PM</div>
+                 <div className="w-10 h-10 rounded-full bg-green-200 border-2 border-[#006400] flex items-center justify-center text-[#006400] font-bold text-xs shadow-sm">+</div>
+              </div>
+              <div>
+                <div className="flex text-yellow-400 text-xs mb-1">★★★★★</div>
+                <p className="text-xs text-white font-medium">{t('register.trustedBy')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Form */}
+        <div className="w-full md:w-7/12 p-8 sm:p-12 bg-white flex flex-col justify-center">
+          <div className="mb-8">
+            <h1 className="text-3xl sm:text-4xl font-black mb-3 tracking-tight text-gray-900">
+              {t('register.formTitle')}
+            </h1>
+            <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+              {t('register.formDesc')}
+            </p>
+          </div>
+
+          <motion.form 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onSubmit={handleSubmit(onSubmit)} 
+            className="flex flex-col gap-5"
+          >
+            <div>
+              <label className="block text-sm font-bold mb-2 text-gray-700 uppercase tracking-wider">{t('register.fullName')}</label>
+              <input 
+                {...register('name')} 
+                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm"
+                placeholder={t('register.namePlaceholder')}
+              />
+              {errors.name && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.name.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold mb-2 text-gray-700 uppercase tracking-wider">{t('register.mobileNumber')}</label>
+              <input 
+                {...register('mobile_number')} 
+                type="tel"
+                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm"
+                placeholder="+1 234 567 8900"
+              />
+              {errors.mobile_number && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.mobile_number.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold mb-2 text-gray-700 uppercase tracking-wider">{t('register.emailLabel')} <span className="text-gray-400 font-normal normal-case">{t('register.optional')}</span></label>
+              <input 
+                {...register('email')} 
+                type="email"
+                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm"
+                placeholder={t('register.emailPlaceholder')}
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.email.message}</p>}
+            </div>
+
+            <div className="flex items-start gap-3 mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+              <input 
+                type="checkbox" 
+                {...register('consent_given')} 
+                id="consent"
+                className="mt-1 w-5 h-5 text-[#006400] rounded border-gray-300 focus:ring-[#006400]"
+              />
+              <label htmlFor="consent" className="text-xs sm:text-sm text-gray-600 leading-relaxed cursor-pointer select-none">
+                {t('register.consent')}
+              </label>
+            </div>
+            {errors.consent_given && <p className="text-red-500 text-xs font-medium -mt-2">{errors.consent_given.message}</p>}
+
+            <button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="mt-4 bg-[#006400] hover:bg-[#004d00] text-white w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 text-lg"
+            >
+              {isSubmitting ? t('register.buttonSubmitting') : t('register.buttonText')}
+            </button>
+          </motion.form>
+        </div>
       </div>
-
-      <motion.form 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        onSubmit={handleSubmit(onSubmit)} 
-        className="flex flex-col gap-5"
-      >
-        <div>
-          <label className="block text-sm font-semibold mb-1.5 text-gray-800">Full Name</label>
-          <input 
-            {...register('name')} 
-            className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#006400]/20 focus:border-[#006400] transition-all"
-            placeholder="Jane Doe"
-          />
-          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold mb-1.5 text-gray-800">Mobile Number</label>
-          <input 
-            {...register('mobile_number')} 
-            type="tel"
-            className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#006400]/20 focus:border-[#006400] transition-all"
-            placeholder="+1 234 567 8900"
-          />
-          {errors.mobile_number && <p className="text-red-500 text-xs mt-1">{errors.mobile_number.message}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold mb-1.5 text-gray-800">Email (Optional)</label>
-          <input 
-            {...register('email')} 
-            type="email"
-            className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#006400]/20 focus:border-[#006400] transition-all"
-            placeholder="jane@example.com"
-          />
-          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
-        </div>
-
-        <div className="flex items-start gap-3 mt-2">
-          <input 
-            type="checkbox" 
-            {...register('consent_given')} 
-            id="consent"
-            className="mt-1 w-4 h-4 text-[#006400] rounded border-gray-300 focus:ring-[#006400]"
-          />
-          <label htmlFor="consent" className="text-xs text-gray-600 leading-relaxed">
-            I agree to be contacted by Jivhala Wellness Center via phone or email regarding my consultation. I understand that individual results vary.
-          </label>
-        </div>
-        {errors.consent_given && <p className="text-red-500 text-xs">{errors.consent_given.message}</p>}
-
-        <button 
-          type="submit" 
-          disabled={isSubmitting}
-          className="mt-4 bg-[#006400] hover:bg-[#004d00] text-white w-full py-4 rounded-full font-semibold flex items-center justify-center transition-colors disabled:opacity-70"
-        >
-          {isSubmitting ? 'Submitting...' : 'Request Consultation'}
-        </button>
-      </motion.form>
     </div>
   );
 }
