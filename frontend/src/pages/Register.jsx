@@ -82,25 +82,25 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center bg-gradient-to-br from-[#f3f9f3] via-white to-[#eaf5eb] p-4 sm:p-8">
+    <div className="min-h-[75vh] flex items-center justify-center bg-gradient-to-br from-[#f3f9f3] via-white to-[#eaf5eb] p-2 sm:p-4 md:p-8">
       <Helmet>
         <title>Book Consultation - Jivhala</title>
       </Helmet>
 
       <div className="max-w-5xl w-full bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-gray-100">
         {/* Left Side: Modern Graphic/Text */}
-        <div className="w-full md:w-5/12 bg-gradient-to-br from-[#006400] to-[#004d00] text-white p-10 flex flex-col justify-between relative overflow-hidden">
+        <div className="w-full md:w-5/12 bg-gradient-to-br from-[#006400] to-[#004d00] text-white p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
           {/* Abstract decorative elements */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/3 blur-xl"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full translate-y-1/3 -translate-x-1/4 blur-xl"></div>
           
           <div className="relative z-10 flex flex-col h-full justify-between">
             <div>
-              <div className="bg-white/20 backdrop-blur-sm w-12 h-12 rounded-2xl flex items-center justify-center mb-8 shadow-inner">
-                <Leaf className="text-white" size={24} />
+              <div className="bg-white/20 backdrop-blur-sm w-10 h-10 rounded-2xl flex items-center justify-center mb-6 shadow-inner">
+                <Leaf className="text-white" size={20} />
               </div>
-              <h2 className="text-4xl font-bold mb-6 leading-tight drop-shadow-md">{t('register.heroTitle')}</h2>
-              <p className="text-green-50 text-lg mb-8 leading-relaxed opacity-90">
+              <h2 className="text-3xl font-bold mb-4 leading-tight drop-shadow-md">{t('register.heroTitle')}</h2>
+              <p className="text-green-50 text-sm sm:text-base mb-6 leading-relaxed opacity-90">
                 {t('register.heroDesc')}
               </p>
             </div>
@@ -120,12 +120,12 @@ export default function Register() {
         </div>
 
         {/* Right Side: Form */}
-        <div className="w-full md:w-7/12 p-8 sm:p-12 bg-white flex flex-col justify-center">
-          <div className="mb-8">
-            <h1 className="text-3xl sm:text-4xl font-black mb-3 tracking-tight text-gray-900">
+        <div className="w-full md:w-7/12 p-6 sm:p-8 bg-white flex flex-col justify-center">
+          <div className="mb-6">
+            <h1 className="text-2xl sm:text-3xl font-black mb-2 tracking-tight text-gray-900">
               {t('register.formTitle')}
             </h1>
-            <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+            <p className="text-gray-500 text-sm leading-relaxed">
               {t('register.formDesc')}
             </p>
           </div>
@@ -134,41 +134,41 @@ export default function Register() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             onSubmit={handleSubmit(onSubmit)} 
-            className="flex flex-col gap-5"
+            className="flex flex-col gap-4"
           >
             <div>
-              <label className="block text-sm font-bold mb-2 text-gray-700 uppercase tracking-wider">{t('register.fullName')}</label>
+              <label className="block text-xs font-bold mb-1.5 text-gray-700 uppercase tracking-wider">{t('register.fullName')}</label>
               <input 
                 {...register('name')} 
-                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm"
+                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-2.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm text-sm"
                 placeholder={t('register.namePlaceholder')}
               />
-              {errors.name && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.name.message}</p>}
+              {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-bold mb-2 text-gray-700 uppercase tracking-wider">{t('register.mobileNumber')}</label>
+              <label className="block text-xs font-bold mb-1.5 text-gray-700 uppercase tracking-wider">{t('register.mobileNumber')}</label>
               <input 
                 {...register('mobile_number')} 
                 type="tel"
-                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm"
+                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-2.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm text-sm"
                 placeholder="+1 234 567 8900"
               />
-              {errors.mobile_number && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.mobile_number.message}</p>}
+              {errors.mobile_number && <p className="text-red-500 text-xs mt-1 font-medium">{errors.mobile_number.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-bold mb-2 text-gray-700 uppercase tracking-wider">{t('register.emailLabel')} <span className="text-gray-400 font-normal normal-case">{t('register.optional')}</span></label>
+              <label className="block text-xs font-bold mb-1.5 text-gray-700 uppercase tracking-wider">{t('register.emailLabel')} <span className="text-gray-400 font-normal normal-case">{t('register.optional')}</span></label>
               <input 
                 {...register('email')} 
                 type="email"
-                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-3.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm"
+                className="w-full bg-gray-50 border-2 border-transparent rounded-xl px-4 py-2.5 focus:bg-white focus:outline-none focus:ring-4 focus:ring-[#006400]/10 focus:border-[#006400] transition-all text-gray-900 font-medium placeholder-gray-400 shadow-sm text-sm"
                 placeholder={t('register.emailPlaceholder')}
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email.message}</p>}
             </div>
 
-            <div className="flex items-start gap-3 mt-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+            <div className="flex items-start gap-3 mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
               <input 
                 type="checkbox" 
                 {...register('consent_given')} 
@@ -184,7 +184,7 @@ export default function Register() {
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className="mt-4 bg-[#006400] hover:bg-[#004d00] text-white w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 text-lg"
+              className="mt-2 bg-[#006400] hover:bg-[#004d00] text-white w-full py-3 rounded-xl font-bold flex items-center justify-center transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-70 disabled:hover:translate-y-0 text-base"
             >
               {isSubmitting ? t('register.buttonSubmitting') : t('register.buttonText')}
             </button>

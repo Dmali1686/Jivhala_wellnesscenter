@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 import { PlayCircle, Leaf, Heart } from 'lucide-react';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import { useTranslation } from 'react-i18next';
+import FounderImg from '../assets/hero.png';
 
 export default function AboutUs() {
+  const { t } = useTranslation();
   const [vlogs, setVlogs] = useState([]);
 
   useEffect(() => {
@@ -26,7 +29,7 @@ export default function AboutUs() {
     return (match && match[2].length === 11) ? match[2] : null;
   };
   return (
-    <div className="flex flex-col gap-16 md:gap-24 px-6 md:px-12 lg:px-24 py-12 relative overflow-hidden max-w-7xl mx-auto">
+    <div className="flex flex-col gap-10 md:gap-16 px-6 md:px-12 lg:px-24 py-6 md:py-10 relative overflow-hidden max-w-7xl mx-auto">
       <Helmet>
         <title>About Us - Jivhala</title>
       </Helmet>
@@ -36,17 +39,17 @@ export default function AboutUs() {
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#eaf5eb] text-[var(--color-primary)] px-5 py-2 rounded-full text-xs font-bold inline-flex items-center gap-2 mb-6"
+          className="bg-[#eaf5eb] text-[var(--color-primary)] px-5 py-2 rounded-full text-xs font-bold inline-flex items-center gap-2 mb-4"
         >
-          <Leaf size={14} /> Our Mission
+          <Leaf size={14} /> {t('about.mission')}
         </motion.div>
         <motion.h1 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-bold text-[#1a1a1a] mb-6 tracking-tight"
+          className="text-3xl md:text-5xl font-bold text-[#1a1a1a] mb-4 tracking-tight"
         >
-          Rooted in <span className="font-serif italic text-[var(--color-primary)]">Wellness.</span>
+          {t('about.title').split(' ')[0]} <span className="font-serif italic text-[var(--color-primary)]">{t('about.title').split(' ').slice(1).join(' ')}</span>
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
@@ -54,30 +57,30 @@ export default function AboutUs() {
           transition={{ delay: 0.2 }}
           className="text-gray-600 text-lg leading-relaxed"
         >
-          At Jivhala Wellness Center, we believe that true vitality is achieved not through restriction, but through a deep, holistic connection to your body, mind, and daily environment.
+          {t('about.subtitle')}
         </motion.p>
       </section>
 
       {/* Founder Section */}
-      <section className="flex flex-col md:flex-row gap-12 items-center bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-gray-100">
-        <div className="w-full md:w-1/2">
+      <section className="flex flex-col md:flex-row gap-8 items-center bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100">
+        <div className="w-full md:w-5/12">
           <img 
-            src="https://images.unsplash.com/photo-1594824436998-dd40b49fbbd8?q=80&w=1000&auto=format&fit=crop" 
+            src={FounderImg} 
             alt="Founder" 
-            className="w-full h-[400px] object-cover rounded-3xl"
+            className="w-full h-[250px] md:h-[350px] object-cover rounded-3xl"
           />
         </div>
-        <div className="w-full md:w-1/2 flex flex-col gap-6">
-          <h2 className="text-3xl font-bold text-gray-900">Meet The Founder</h2>
+        <div className="w-full md:w-7/12 flex flex-col gap-4 md:gap-5">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{t('about.founderTitle')}</h2>
           <p className="text-gray-600 leading-relaxed">
-            With over a decade of experience in holistic nutrition and lifestyle coaching, our founder created Jivhala as a sanctuary for those exhausted by fad diets and relentless stress.
+            {t('about.founderP1')}
           </p>
           <p className="text-gray-600 leading-relaxed">
-            Our approach focuses on sustainable, gentle architecture for your daily life. We combine evidence-based nutrition with radical calm practices to help you achieve a state of genuine, effortless health.
+            {t('about.founderP2')}
           </p>
           <div className="flex items-center gap-3 mt-4 text-[var(--color-primary)] font-semibold">
             <Heart fill="currentColor" size={20} />
-            <span>Dedicated to your transformation</span>
+            <span>{t('about.dedicated')}</span>
           </div>
         </div>
       </section>
@@ -86,10 +89,10 @@ export default function AboutUs() {
       <section className="py-8">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Latest Vlogs</h2>
-            <p className="text-gray-600">Watch our newest insights, wellness tips, and guided routines.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('about.vlogsTitle')}</h2>
+            <p className="text-gray-600">{t('about.vlogsDesc')}</p>
           </div>
-          <button className="hidden md:block text-[#006400] font-semibold hover:underline">View All Videos</button>
+          <button className="hidden md:block text-[#006400] font-semibold hover:underline">{t('about.viewAll')}</button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -112,7 +115,7 @@ export default function AboutUs() {
             ))
           ) : (
             <div className="col-span-1 md:col-span-3 text-center py-12 text-gray-500">
-              No vlogs available yet.
+              {t('about.noVlogs')}
             </div>
           )}
         </div>

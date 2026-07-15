@@ -81,6 +81,30 @@ const resources = {
         title: "Jivhala Support",
         tooltip: "Hi! 👋 How can we help you with your wellness journey today?",
         defaultMessage: "Hi Jivhala! I'd like to know more about your wellness programs."
+      },
+      about: {
+        mission: "Our Mission",
+        title: "Rooted in Wellness.",
+        subtitle: "At Jivhala Wellness Center, we believe that true vitality is achieved not through restriction, but through a deep, holistic connection to your body, mind, and daily environment.",
+        founderTitle: "Meet The Founder",
+        founderP1: "With over a decade of experience in holistic nutrition and lifestyle coaching, our founder created Jivhala as a sanctuary for those exhausted by fad diets and relentless stress.",
+        founderP2: "Our approach focuses on sustainable, gentle architecture for your daily life. We combine evidence-based nutrition with radical calm practices to help you achieve a state of genuine, effortless health.",
+        dedicated: "Dedicated to your transformation",
+        vlogsTitle: "Latest Vlogs",
+        vlogsDesc: "Watch our newest insights, wellness tips, and guided routines.",
+        viewAll: "View All Videos",
+        noVlogs: "No vlogs available yet."
+      },
+      footer: {
+        title: "Jivhala Wellness",
+        tagline: "Radical Calm defined. Your partner in holistic life and childcare.",
+        quickLinks: "Quick Links",
+        legal: "Legal",
+        contactUs: "Contact Us",
+        privacyPolicy: "Privacy Policy",
+        faq: "FAQ",
+        termsOfService: "Terms of Service",
+        rights: "Jivhala Wellness. All rights reserved."
       }
     }
   },
@@ -162,6 +186,30 @@ const resources = {
         title: "जिव्हाळा सपोर्ट",
         tooltip: "नमस्कार! 👋 आम्ही आज तुमच्या वेलनेस प्रवासात कशी मदत करू शकतो?",
         defaultMessage: "नमस्कार जिव्हाळा! मला तुमच्या वेलनेस प्रोग्रामबद्दल अधिक जाणून घ्यायचे आहे."
+      },
+      about: {
+        mission: "आमचे ध्येय",
+        title: "वेलनेसमध्ये रुजलेले.",
+        subtitle: "जिव्हाळा वेलनेस सेंटरमध्ये आमचा विश्वास आहे की खरे चैतन्य निर्बंधांतून नव्हे, तर तुमचे शरीर, मन आणि दैनंदिन वातावरणाशी असलेल्या सखोल, सर्वांगीण जोडणीतून प्राप्त होते.",
+        founderTitle: "संस्थापकांना भेटा",
+        founderP1: "सर्वांगीण पोषण आणि जीवनशैली कोचिंगमधील दशकभराच्या अनुभवासह, आमच्या संस्थापकांनी फॅड डाएट्स आणि सततच्या तणावाने त्रस्त असलेल्यांसाठी एक आश्रयस्थान म्हणून जिव्हाळाची निर्मिती केली.",
+        founderP2: "आमचा दृष्टिकोन तुमच्या दैनंदिन जीवनासाठी शाश्वत, सौम्य रचनेवर केंद्रित आहे. तुम्हाला खऱ्या अर्थाने, सहजतेने आरोग्य प्राप्त करण्यासाठी आम्ही पुराव्यावर आधारित पोषण आणि उत्कट शांतता सरावांची सांगड घालतो.",
+        dedicated: "तुमच्या परिवर्तनासाठी समर्पित",
+        vlogsTitle: "नवीनतम व्लॉग्स",
+        vlogsDesc: "आमचे नवीन विचार, वेलनेस टिप्स आणि मार्गदर्शित दिनचर्या पहा.",
+        viewAll: "सर्व व्हिडिओ पहा",
+        noVlogs: "अद्याप कोणतेही व्लॉग उपलब्ध नाहीत."
+      },
+      footer: {
+        title: "जिव्हाळा वेलनेस",
+        tagline: "उत्कट शांतता परिभाषित. सर्वांगीण जीवन आणि बालसंगोपनात आपला भागीदार.",
+        quickLinks: "द्रुत दुवे",
+        legal: "कायदेशीर",
+        contactUs: "आमच्याशी संपर्क साधा",
+        privacyPolicy: "गोपनीयता धोरण",
+        faq: "नेहमी विचारले जाणारे प्रश्न (FAQ)",
+        termsOfService: "सेवा अटी",
+        rights: "जिव्हाळा वेलनेस. सर्व हक्क राखीव."
       }
     }
   }
