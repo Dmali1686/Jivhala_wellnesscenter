@@ -10,6 +10,8 @@ import Register from './pages/Register';
 import SuccessStories from './pages/SuccessStories';
 import AboutUs from './pages/AboutUs';
 import AdminDashboard from './pages/AdminDashboard';
+import ClientLogin from './pages/ClientLogin';
+import ClientDashboard from './pages/ClientDashboard';
 import { useLocation } from 'react-router-dom';
 
 function AppContent() {
@@ -29,6 +31,8 @@ function AppContent() {
             <Route path="/register" element={<Register />} />
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/login" element={<ClientLogin />} />
+            <Route path="/dashboard" element={<ClientDashboard />} />
           </Routes>
         </main>
 

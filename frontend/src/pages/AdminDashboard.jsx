@@ -5,6 +5,7 @@ import { Users, Filter, MoreVertical, LayoutDashboard, Settings, LogOut, Star } 
 import { Link, useNavigate } from 'react-router-dom';
 import SuccessStoriesAdmin from '../components/admin/SuccessStoriesAdmin';
 import VlogsAdmin from '../components/admin/VlogsAdmin';
+import ClientsAdmin from '../components/admin/ClientsAdmin';
 import { API_BASE_URL } from '../config';
 
 export default function AdminDashboard() {
@@ -66,8 +67,14 @@ export default function AdminDashboard() {
             <LayoutDashboard size={20} />
             Leads
           </button>
-          <button 
-            onClick={() => setActiveTab('stories')}
+            <button 
+              onClick={() => setActiveTab('clients')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl mb-2 transition-colors ${activeTab === 'clients' ? 'bg-green-50 text-[var(--color-primary)] font-semibold' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              <Users size={20} /> Client Portal
+            </button>
+            <button 
+              onClick={() => setActiveTab('stories')}
             className={`flex items-center gap-3 px-4 py-3 font-semibold rounded-xl transition-colors ${activeTab === 'stories' ? 'bg-[#eaf5eb] text-[#006400]' : 'text-gray-600 hover:bg-gray-50'}`}
           >
             <Star size={20} />
@@ -191,9 +198,9 @@ export default function AdminDashboard() {
             </>
           )}
 
-        {activeTab === 'stories' && (
-          <SuccessStoriesAdmin />
-        )}
+        {activeTab === 'clients' && <ClientsAdmin />}
+
+        {activeTab === 'stories' && <SuccessStoriesAdmin />}
 
         {activeTab === 'vlogs' && (
           <VlogsAdmin />

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube, Facebook, MapPin, Phone, Mail } from 'lucide-react';
+import { Camera, Video, Heart, MapPin, Phone, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
@@ -22,13 +22,13 @@ export default function Footer() {
             </p>
             <div className="flex gap-4 text-white">
               <a href="#" className="p-2.5 bg-white/5 border border-white/10 rounded-full hover:bg-white/20 transition-all hover:-translate-y-1">
-                <Instagram size={20} />
+                <Camera size={20} />
               </a>
               <a href="#" className="p-2.5 bg-white/5 border border-white/10 rounded-full hover:bg-white/20 transition-all hover:-translate-y-1">
-                <Youtube size={20} />
+                <Video size={20} />
               </a>
               <a href="#" className="p-2.5 bg-white/5 border border-white/10 rounded-full hover:bg-white/20 transition-all hover:-translate-y-1">
-                <Facebook size={20} />
+                <Heart size={20} />
               </a>
             </div>
           </div>

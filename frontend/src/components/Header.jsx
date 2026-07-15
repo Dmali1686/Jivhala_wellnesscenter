@@ -15,6 +15,7 @@ export default function Header() {
       </Link>
       
       <nav className="hidden sm:flex items-center gap-6 text-sm font-semibold text-gray-700">
+        <Link to="/login" className="text-[var(--color-primary)] hover:text-[#004d00] transition-colors font-bold border border-[#006400] px-4 py-1.5 rounded-full">Client Portal</Link>
         <Link to="/about" className="hover:text-[var(--color-primary)] transition-colors">{t('header.about')} & Vlogs</Link>
         <Link to="/success-stories" className="hover:text-[var(--color-primary)] transition-colors">{t('header.successStories')}</Link>
         <Link to="/register" className="bg-[#006400] text-white px-5 py-2 rounded-full hover:bg-[#004d00] transition-colors">{t('header.joinJivhala')}</Link>
