@@ -4,6 +4,12 @@ import { Trash2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { API_BASE_URL } from '../../config';
 
+// Helper to get auth headers
+function getAuthHeaders() {
+  const token = localStorage.getItem('jivhala_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 export default function SuccessStoriesAdmin() {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,7 +50,7 @@ export default function SuccessStoriesAdmin() {
     const data = new FormData();
     data.append('file', file);
     const response = await axios.post(`${API_BASE_URL}/api/v1/stories/upload-image/`, data, {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data', ...getAuthHeaders() }
     });
     return response.data.url;
   };
@@ -69,7 +75,9 @@ export default function SuccessStoriesAdmin() {
         after_image: afterUrl
       };
 
-      await axios.post(`${API_BASE_URL}/api/v1/stories/`, storyPayload);
+      await axios.post(`${API_BASE_URL}/api/v1/stories/`, storyPayload, {
+        headers: getAuthHeaders(),
+      });
       toast.success('Story added successfully!');
       setShowForm(false);
       setFormData({
@@ -91,7 +99,9 @@ export default function SuccessStoriesAdmin() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this story?")) return;
     try {
-      await axios.delete(`${API_BASE_URL}/api/v1/stories/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/v1/stories/${id}`, {
+        headers: getAuthHeaders(),
+      });
       toast.success('Story deleted');
       fetchStories();
     } catch (error) {
@@ -198,11 +208,11 @@ export default function SuccessStoriesAdmin() {
             <div key={story.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
               <div className="flex h-48">
                 <div className="w-1/2 relative bg-gray-100">
-                  <img src={`http://localhost:8000${story.before_image}`} alt="Before" className="w-full h-full object-cover" />
+                  <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${story.before_image}`} alt="Before" className="w-full h-full object-cover" />
                   <div className="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">Before</div>
                 </div>
                 <div className="w-1/2 relative bg-gray-200">
-                  <img src={`http://localhost:8000${story.after_image}`} alt="After" className="w-full h-full object-cover" />
+                  <img src={`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${story.after_image}`} alt="After" className="w-full h-full object-cover" />
                   <div className="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">After</div>
                 </div>
               </div>

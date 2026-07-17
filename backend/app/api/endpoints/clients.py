@@ -7,15 +7,18 @@ from datetime import date
 from app.database import get_db
 from app.models.user import User
 from app.models.progress import ProgressLog
-from app.schemas.user import UserCreate, UserResponse, UserBase
+from app.schemas.user import UserCreate, UserResponse, UserBase, UserUpdate, PasswordUpdate
 from app.schemas.progress import ProgressLogCreate, ProgressLogResponse
-from app.core.security import get_password_hash
+from app.core.security import get_password_hash, get_current_user, get_current_admin, verify_password
 
-# TODO: Add dependency to verify admin/client JWT token
 router = APIRouter()
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def create_client(client_in: UserCreate, db: AsyncSession = Depends(get_db)):
+async def create_client(
+    client_in: UserCreate,
+    db: AsyncSession = Depends(get_db),
+    admin: User = Depends(get_current_admin),  # Admin-only
+):
     """Admin endpoint to create a new client with mobile number and password."""
     # Check if mobile exists
     result = await db.execute(select(User).where(User.mobile_number == client_in.mobile_number))
@@ -37,30 +40,62 @@ async def create_client(client_in: UserCreate, db: AsyncSession = Depends(get_db
     return new_user
 
 @router.get("/me", response_model=UserResponse)
-async def get_my_dashboard(mobile_number: str, db: AsyncSession = Depends(get_db)):
-    """Get dashboard info for logged in client. Note: mobile_number should come from JWT token."""
-    result = await db.execute(select(User).where(User.mobile_number == mobile_number))
-    user = result.scalars().first()
-    if not user:
-         raise HTTPException(status_code=404, detail="User not found")
-    return user
+async def get_my_dashboard(
+    current_user: User = Depends(get_current_user),
+):
+    """Get dashboard info for the logged-in client."""
+    return current_user
+
+@router.put("/me", response_model=UserResponse)
+async def update_my_profile(
+    updates: UserUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Update the authenticated client's profile (name, height, target weight)."""
+    if updates.username is not None:
+        current_user.username = updates.username
+    if updates.height is not None:
+        current_user.height = updates.height
+    if updates.target_weight is not None:
+        current_user.target_weight = updates.target_weight
+    
+    await db.commit()
+    await db.refresh(current_user)
+    return current_user
+
+@router.put("/me/password")
+async def change_password(
+    passwords: PasswordUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Change the authenticated client's password. Requires old password verification."""
+    if not verify_password(passwords.old_password, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    if len(passwords.new_password) < 6:
+        raise HTTPException(status_code=400, detail="New password must be at least 6 characters")
+    
+    current_user.password_hash = get_password_hash(passwords.new_password)
+    await db.commit()
+    return {"message": "Password updated successfully"}
 
 @router.post("/me/progress", response_model=ProgressLogResponse)
-async def log_progress(mobile_number: str, log_in: ProgressLogCreate, db: AsyncSession = Depends(get_db)):
-    """Log daily weight. mobile_number should come from JWT token."""
-    result = await db.execute(select(User).where(User.mobile_number == mobile_number))
-    user = result.scalars().first()
-    if not user:
-         raise HTTPException(status_code=404, detail="User not found")
-         
+async def log_progress(
+    log_in: ProgressLogCreate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Log daily weight for the authenticated client."""
     new_log = ProgressLog(
-        user_id=user.id,
+        user_id=current_user.id,
         weight=log_in.weight,
         date=log_in.date or date.today()
     )
     
     # Update streak
-    user.streak += 1
+    current_user.streak += 1
     
     db.add(new_log)
     await db.commit()
@@ -68,11 +103,15 @@ async def log_progress(mobile_number: str, log_in: ProgressLogCreate, db: AsyncS
     return new_log
 
 @router.get("/me/progress", response_model=List[ProgressLogResponse])
-async def get_progress(mobile_number: str, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.mobile_number == mobile_number))
-    user = result.scalars().first()
-    if not user:
-         raise HTTPException(status_code=404, detail="User not found")
-         
-    logs = await db.execute(select(ProgressLog).where(ProgressLog.user_id == user.id).order_by(ProgressLog.date.asc()))
+async def get_progress(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get weight history for the authenticated client."""
+    logs = await db.execute(
+        select(ProgressLog)
+        .where(ProgressLog.user_id == current_user.id)
+        .order_by(ProgressLog.date.asc())
+    )
     return logs.scalars().all()
+

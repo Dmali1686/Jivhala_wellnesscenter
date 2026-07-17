@@ -4,6 +4,12 @@ import { Plus, Trash2, Video } from 'lucide-react';
 import { toast } from 'sonner';
 import { API_BASE_URL } from '../../config';
 
+// Helper to get auth headers
+function getAuthHeaders() {
+  const token = localStorage.getItem('jivhala_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 export default function VlogsAdmin() {
   const [vlogs, setVlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,7 +46,9 @@ export default function VlogsAdmin() {
     setIsSubmitting(true);
 
     try {
-      await axios.post(`${API_BASE_URL}/api/v1/vlogs/`, formData);
+      await axios.post(`${API_BASE_URL}/api/v1/vlogs/`, formData, {
+        headers: getAuthHeaders(),
+      });
       toast.success('Vlog added successfully!');
 
       setFormData({
@@ -61,7 +69,9 @@ export default function VlogsAdmin() {
     if (!window.confirm('Are you sure you want to delete this vlog?')) return;
 
     try {
-      await axios.delete(`${API_BASE_URL}/api/v1/vlogs/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/v1/vlogs/${id}`, {
+        headers: getAuthHeaders(),
+      });
       toast.success('Vlog deleted successfully');
       fetchVlogs();
     } catch (error) {

@@ -4,6 +4,12 @@ import { Plus, Trash2 } from 'lucide-react';
 import { API_BASE_URL } from '../../config';
 import { toast } from 'sonner';
 
+// Helper to get auth headers
+function getAuthHeaders() {
+  const token = localStorage.getItem('jivhala_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 export default function ClientsAdmin() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +35,9 @@ export default function ClientsAdmin() {
         height: formData.height ? parseFloat(formData.height) : null,
         target_weight: formData.target_weight ? parseFloat(formData.target_weight) : null
       };
-      await axios.post(`${API_BASE_URL}/api/v1/clients/`, payload);
+      await axios.post(`${API_BASE_URL}/api/v1/clients/`, payload, {
+        headers: getAuthHeaders(),
+      });
       toast.success('Client portal account created successfully!');
       setShowModal(false);
       setFormData({username: '', mobile_number: '', password: '', height: '', target_weight: ''});

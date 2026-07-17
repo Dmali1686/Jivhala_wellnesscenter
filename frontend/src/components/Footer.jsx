@@ -37,9 +37,9 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-2 md:col-start-6">
             <h3 className="text-white font-bold mb-6 text-lg tracking-wide">{t('footer.quickLinks')}</h3>
             <div className="flex flex-col gap-4 text-sm text-green-100/70">
-              <Link to="/about" className="hover:text-white transition-colors">{t('nav.about')}</Link>
-              <Link to="/vlogs" className="hover:text-white transition-colors">{t('nav.vlogs')}</Link>
-              <Link to="/success-stories" className="hover:text-white transition-colors">{t('nav.successStories')}</Link>
+              <Link to="/about" className="hover:text-white transition-colors">{t('header.about')}</Link>
+              <Link to="/health-checkup" className="hover:text-white transition-colors">🩺 {t('healthCheckup.badge')}</Link>
+              <Link to="/success-stories" className="hover:text-white transition-colors">{t('header.successStories')}</Link>
             </div>
           </div>
 

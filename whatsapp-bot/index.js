@@ -4,10 +4,29 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
 const app = express();
-app.use(cors());
+
+// Security: Restrict CORS to backend origin only
+app.use(cors({
+    origin: ['http://localhost:8000'],
+    methods: ['POST'],
+}));
 app.use(express.json());
 
 const PORT = 3000;
+
+// API Key for inter-service authentication
+const API_KEY = process.env.WHATSAPP_API_KEY || 'change-this-whatsapp-api-key-in-production';
+
+// API Key validation middleware
+function validateApiKey(req, res, next) {
+    const providedKey = req.headers['x-api-key'];
+    
+    if (!providedKey || providedKey !== API_KEY) {
+        return res.status(401).json({ error: 'Unauthorized: Invalid or missing API key' });
+    }
+    
+    next();
+}
 
 console.log('Initializing WhatsApp Client...');
 
@@ -36,8 +55,8 @@ client.on('disconnected', (reason) => {
 // Start the client
 client.initialize();
 
-// Express API Endpoint for sending welcome messages
-app.post('/send-welcome', async (req, res) => {
+// Express API Endpoint for sending welcome messages (protected with API key)
+app.post('/send-welcome', validateApiKey, async (req, res) => {
     try {
         const { name, mobile_number } = req.body;
 
@@ -45,8 +64,12 @@ app.post('/send-welcome', async (req, res) => {
             return res.status(400).json({ error: 'Mobile number is required' });
         }
 
-        // Clean the phone number (remove +, spaces, dashes)
+        // Validate mobile number format (basic check — digits only after cleaning)
         let cleanedNumber = mobile_number.replace(/\D/g, '');
+        
+        if (cleanedNumber.length < 10 || cleanedNumber.length > 15) {
+            return res.status(400).json({ error: 'Invalid mobile number format' });
+        }
         
         // If it doesn't have a country code and is 10 digits (India standard), prepend 91
         if (cleanedNumber.length === 10) {
@@ -70,3 +93,4 @@ app.post('/send-welcome', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 WhatsApp Microservice API running on http://localhost:${PORT}`);
 });
+

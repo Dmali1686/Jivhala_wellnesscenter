@@ -7,6 +7,13 @@ import SuccessStoriesAdmin from '../components/admin/SuccessStoriesAdmin';
 import VlogsAdmin from '../components/admin/VlogsAdmin';
 import ClientsAdmin from '../components/admin/ClientsAdmin';
 import { API_BASE_URL } from '../config';
+import { toast } from 'sonner';
+
+// Helper to get auth headers
+function getAuthHeaders() {
+  const token = localStorage.getItem('jivhala_token');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('leads');
@@ -14,16 +21,35 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Route guard — redirect if not logged in as admin
   useEffect(() => {
+    const token = localStorage.getItem('jivhala_token');
+    const role = localStorage.getItem('jivhala_role');
+    
+    if (!token || role !== 'admin') {
+      toast.error('Admin access required. Please login.');
+      navigate('/login');
+      return;
+    }
+    
     fetchLeads();
   }, []);
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/v1/leads/`);
+      const response = await axios.get(`${API_BASE_URL}/api/v1/leads/`, {
+        headers: getAuthHeaders(),
+      });
       setLeads(response.data);
     } catch (error) {
-      console.error('Failed to fetch leads', error);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        toast.error('Session expired or access denied.');
+        localStorage.removeItem('jivhala_token');
+        localStorage.removeItem('jivhala_role');
+        navigate('/login');
+      } else {
+        console.error('Failed to fetch leads', error);
+      }
     } finally {
       setLoading(false);
     }

@@ -17,8 +17,8 @@ export default function Home() {
       name: t('home.stories.dinesh.name'),
       loss: t('home.stories.dinesh.loss'),
       feedback: t('home.stories.dinesh.feedback'),
-      beforeImage: "/kaki_before.png",
-      afterImage: "/kaki_after.png",
+      beforeImage: "/papa_before.png",
+      afterImage: "/papa_after.jpeg",
       beforeWeight: "67",
       afterWeight: "56"
     },
@@ -27,8 +27,8 @@ export default function Home() {
       name: t('home.stories.priya.name'),
       loss: t('home.stories.priya.loss'),
       feedback: t('home.stories.priya.feedback'),
-      beforeImage: "/annu_sir_before.png",
-      afterImage: "/annu_sir_after.png",
+      beforeImage: "/aai_before.png",
+      afterImage: "/aai_after.jpeg",
       beforeWeight: "90",
       afterWeight: "80"
     },
@@ -37,8 +37,8 @@ export default function Home() {
       name: t('home.stories.rahul.name'),
       loss: t('home.stories.rahul.loss'),
       feedback: t('home.stories.rahul.feedback'),
-      beforeImage: "https://images.unsplash.com/photo-1594824436998-dd40b49fbbd8?q=80&w=800&auto=format&fit=crop",
-      afterImage: "https://images.unsplash.com/photo-1594824436998-dd40b49fbbd8?q=80&w=800&auto=format&fit=crop",
+      beforeImage: "/vittal_before.png",
+      afterImage: "/vitthal_after.png",
       beforeWeight: "92",
       afterWeight: "78"
     }

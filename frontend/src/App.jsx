@@ -12,6 +12,7 @@ import AboutUs from './pages/AboutUs';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientLogin from './pages/ClientLogin';
 import ClientDashboard from './pages/ClientDashboard';
+import HealthCheckup from './pages/HealthCheckup';
 import { useLocation } from 'react-router-dom';
 
 function AppContent() {
@@ -33,6 +34,7 @@ function AppContent() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/login" element={<ClientLogin />} />
             <Route path="/dashboard" element={<ClientDashboard />} />
+            <Route path="/health-checkup" element={<HealthCheckup />} />
           </Routes>
         </main>
 

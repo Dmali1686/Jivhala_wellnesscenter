@@ -10,10 +10,13 @@ class ProgressLogBase(BaseModel):
 class ProgressLogCreate(ProgressLogBase):
     pass
 
-class ProgressLogResponse(ProgressLogBase):
+class ProgressLogResponse(BaseModel):
     id: UUID
     user_id: UUID
+    weight: float
+    date: date
     created_at: datetime
 
     class Config:
         from_attributes = True
+
