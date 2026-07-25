@@ -27,7 +27,7 @@ async def send_whatsapp_welcome(name: str, mobile_number: str, language: str = '
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                "http://localhost:3000/send-welcome",
+                f"{settings.WHATSAPP_BOT_URL}/send-welcome",
                 json={"name": name, "mobile_number": mobile_number, "language": language},
                 headers={"X-API-Key": settings.WHATSAPP_BOT_API_KEY},
                 timeout=10.0

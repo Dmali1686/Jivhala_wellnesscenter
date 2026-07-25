@@ -43,7 +43,8 @@ class Settings(BaseSettings):
         except json.JSONDecodeError:
             return [i.strip() for i in self.CORS_ORIGINS.split(",") if i.strip()]
             
-    # WhatsApp bot inter-service API key
+    # WhatsApp bot inter-service API key and URL
+    WHATSAPP_BOT_URL: str = "http://localhost:3000"
     WHATSAPP_BOT_API_KEY: str = "change-this-whatsapp-api-key-in-production"
     
     model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
