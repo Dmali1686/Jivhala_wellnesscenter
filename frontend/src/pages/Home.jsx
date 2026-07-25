@@ -50,7 +50,7 @@ export default function Home() {
     const fetchStories = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/stories/`);
-        if (response.data && response.data.length > 0) {
+        if (response.data && Array.isArray(response.data) && response.data.length > 0) {
           setDynamicStories(response.data);
         }
       } catch (error) {
