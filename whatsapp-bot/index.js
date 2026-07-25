@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const { handleLeadCapture } = require('./src/leadCapture');
 
 const app = express();
 
@@ -31,10 +32,20 @@ function validateApiKey(req, res, next) {
 console.log('Initializing WhatsApp Client...');
 
 // Initialize WhatsApp Client with LocalAuth so session is saved
+// Uses system Google Chrome — avoids "Couldn't link" errors with outdated bundled Chromium
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--disable-gpu'
+        ]
     }
 });
 
@@ -52,13 +63,41 @@ client.on('disconnected', (reason) => {
     console.log('\n❌ WhatsApp Client was disconnected:', reason);
 });
 
+// ─── Inbound Message Handler ───────────────────────────────────────────────
+client.on('message', async (msg) => {
+    try {
+        // Ignore status updates, own messages, group chats, broadcasts, newsletters
+        if (
+            msg.isStatus ||
+            msg.fromMe ||
+            msg.from.endsWith('@g.us') ||
+            msg.from.endsWith('@broadcast') ||
+            msg.from.endsWith('@newsletter')
+        ) {
+            return;
+        }
+
+        console.log(`📩 Inbound message from ${msg.from}: "${msg.body}"`);
+
+        // Delegate to multi-step lead capture flow.
+        // Returns true if the message was handled (booking keyword or active session).
+        const handled = await handleLeadCapture(msg, client);
+
+        if (!handled) {
+            // Future: add other auto-reply rules here
+        }
+    } catch (err) {
+        console.error('❌ Error handling inbound message:', err);
+    }
+});
+
 // Start the client
 client.initialize();
 
 // Express API Endpoint for sending welcome messages (protected with API key)
 app.post('/send-welcome', validateApiKey, async (req, res) => {
     try {
-        const { name, mobile_number } = req.body;
+        const { name, mobile_number, language } = req.body;
 
         if (!mobile_number) {
             return res.status(400).json({ error: 'Mobile number is required' });
@@ -77,7 +116,21 @@ app.post('/send-welcome', validateApiKey, async (req, res) => {
         }
 
         const chatId = `${cleanedNumber}@c.us`;
-        const message = `Namaste ${name || 'there'}! 🙏\n\nThank you for booking a consultation with Jivhala. We have received your request and our holistic wellness coach will contact you shortly to schedule your session.\n\nTake a deep breath, your journey to radical calm begins now. 🌱`;
+
+        // ── Language-aware welcome message ────────────────────────────────────
+        let message;
+        if (language === 'mr') {
+            message =
+                `नमस्ते ${name || 'मित्रा'}! 🙏\n\n` +
+                `जिव्हाळा वेलनेस सेंटरमध्ये समावेश केल्याबद्दल धन्यवाद!\n\n` +
+                `आम्हाला तुमची सल्ला विनंती मिळाली आहे. आमचे समग्र वेलनेस कोच लवकरच तुमच्याशी संपर्क साधतील आणि तुमची सत्र वेळ निश्चित करतील.\n\n` +
+                `एक दीर्घ श्वास घ्या — तुमचा उत्कट शांततेचा प्रवास आता सुरू होतो. 🌱`;
+        } else {
+            message =
+                `Namaste ${name || 'there'}! 🙏\n\n` +
+                `Thank you for booking a consultation with Jivhala. We have received your request and our holistic wellness coach will contact you shortly to schedule your session.\n\n` +
+                `Take a deep breath, your journey to radical calm begins now. 🌱`;
+        }
 
         // Send the message
         await client.sendMessage(chatId, message);

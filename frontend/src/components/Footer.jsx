@@ -12,9 +12,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="col-span-1 md:col-span-4 flex flex-col items-start text-left">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
-                 <span className="text-[#004d00] font-bold text-xl">J</span>
-              </div>
+              <img src="/logo.png" alt="Jivhala Logo" className="w-12 h-12 object-contain" />
               <h2 className="text-2xl font-bold text-white tracking-tight">{t('footer.title')}</h2>
             </div>
             <p className="text-sm text-green-100/70 mb-8 max-w-sm leading-relaxed">

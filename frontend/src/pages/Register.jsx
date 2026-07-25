@@ -20,7 +20,8 @@ const formSchema = z.object({
 });
 
 export default function Register() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language || 'mr';
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
@@ -38,7 +39,7 @@ export default function Register() {
     setIsSubmitting(true);
     try {
       // If email is empty string, convert to null for the backend
-      const payload = { ...data };
+      const payload = { ...data, language: lang };
       if (!payload.email) payload.email = null;
 
       await axios.post(`${API_BASE_URL}/api/v1/leads/`, payload);

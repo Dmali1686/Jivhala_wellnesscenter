@@ -1,20 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", "Outfit", sans-serif;
-  --font-serif: "Playfair Display", "Merriweather", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Tiro Devanagari Hindi", serif;
 
-  --color-primary: #006400; /* Deep forest green */
+  /* Marathi-specific font stack */
+  --font-mr-heading:  "Noto Serif Devanagari", serif;   /* h1, h2 — bold traditional serif */
+  --font-mr-body:     "Noto Sans Devanagari", sans-serif; /* body text — clean & readable */
+  --font-mr-accent:   "Baloo 2", cursive;               /* CTAs, badges, bold highlights */
+  --font-mr-display:  "Rozha One", serif;               /* Hero accent word — premium display */
+
+  --color-primary: #006400;
   --color-primary-hover: #004d00;
-  
-  --color-accent-soft: #eaf5eb; /* Soft mint background */
+
+  --color-accent-soft: #eaf5eb;
   --color-accent-medium: #c2e5c6;
-  
-  --color-bg-base: #FAFAFA; /* Soft off-white */
+
+  --color-bg-base: #FAFAFA;
   --color-text-main: #1A1A1A;
   --color-text-muted: #666666;
 }
 
+/* ── Default (English) body ─────────────────────────────────── */
 body {
   font-family: var(--font-sans);
   background-color: var(--color-bg-base);
@@ -28,10 +35,106 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
-.font-serif {
-  font-family: var(--font-serif);
+/* ── Marathi (Devanagari) Typography System ─────────────────── */
+
+/* Applied when the page/component has lang="mr" or the i18n root gets .lang-mr */
+
+/* h1 — Hero title: Noto Serif Devanagari Bold (strong, premium serif) */
+:lang(mr) h1,
+.lang-mr h1 {
+  font-family: var(--font-mr-heading);
+  font-weight: 700;          /* Bold — makes the hero title strong and impactful */
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
 }
 
-.font-italic {
-  font-style: italic;
+/* h1 italic accent word — "बदला": Rozha One display font (bold & stylish by design) */
+:lang(mr) h1 em,
+:lang(mr) h1 span.hero-accent,
+.lang-mr h1 em,
+.lang-mr h1 span.hero-accent {
+  font-family: var(--font-mr-display);
+  font-weight: 400;          /* Rozha One is inherently bold/heavy — 400 is already display weight */
+  font-style: normal;        /* Rozha doesn't need italic — its stroke contrast is already stunning */
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+  display: block;
+  line-height: 1.1;
 }
+
+/* h2 — Section headings: Noto Serif Devanagari Semibold */
+:lang(mr) h2,
+.lang-mr h2 {
+  font-family: var(--font-mr-heading);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.005em;
+}
+
+/* h3, h4 — Sub-headings: Baloo 2 (expressive, warm) */
+:lang(mr) h3,
+:lang(mr) h4,
+.lang-mr h3,
+.lang-mr h4 {
+  font-family: var(--font-mr-accent);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Body text, paragraphs: Noto Sans Devanagari (clean, optimized for reading) */
+:lang(mr) p,
+:lang(mr) li,
+:lang(mr) span,
+:lang(mr) label,
+.lang-mr p,
+.lang-mr li,
+.lang-mr span,
+.lang-mr label {
+  font-family: var(--font-mr-body);
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+/* Navigation links & buttons: Baloo 2 (bold, punchy) */
+:lang(mr) nav a,
+:lang(mr) button,
+:lang(mr) .btn,
+:lang(mr) [role="button"],
+.lang-mr nav a,
+.lang-mr button,
+.lang-mr .btn {
+  font-family: var(--font-mr-accent);
+  font-weight: 700;
+}
+
+/* Badge / tag text: Baloo 2 */
+:lang(mr) .badge,
+:lang(mr) .tag,
+.lang-mr .badge,
+.lang-mr .tag {
+  font-family: var(--font-mr-accent);
+  font-weight: 600;
+  font-size: 0.85em;
+  letter-spacing: 0.04em;
+}
+
+/* Muted / caption text: Noto Sans light weight */
+:lang(mr) .text-muted,
+:lang(mr) figcaption,
+:lang(mr) small,
+.lang-mr .text-muted,
+.lang-mr small {
+  font-family: var(--font-mr-body);
+  font-weight: 300;
+  color: var(--color-text-muted);
+}
+
+/* ── Utility classes (usable manually anywhere) ─────────────── */
+.font-serif         { font-family: var(--font-serif); }
+.font-mr-heading    { font-family: var(--font-mr-heading); }
+.font-mr-body       { font-family: var(--font-mr-body); }
+.font-mr-accent     { font-family: var(--font-mr-accent); font-weight: 700; }
+.font-mr-display    { font-family: var(--font-mr-display); color: var(--color-primary); }
+.font-italic        { font-style: italic; }

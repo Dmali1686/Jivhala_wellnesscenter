@@ -19,16 +19,16 @@ from app.core.config import settings
 router = APIRouter()
 limiter = Limiter(key_func=get_remote_address)
 
-async def send_whatsapp_welcome(name: str, mobile_number: str):
+async def send_whatsapp_welcome(name: str, mobile_number: str, language: str = 'en'):
     """
     Sends a request to the Node.js WhatsApp microservice to dispatch a welcome message.
-    Includes API key for authentication.
+    Includes API key for authentication and the user's language preference.
     """
     try:
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 "http://localhost:3000/send-welcome",
-                json={"name": name, "mobile_number": mobile_number},
+                json={"name": name, "mobile_number": mobile_number, "language": language},
                 headers={"X-API-Key": settings.WHATSAPP_BOT_API_KEY},
                 timeout=10.0
             )
@@ -60,7 +60,7 @@ async def create_lead(request: Request, lead_in: LeadCreate, background_tasks: B
     await db.refresh(mock_lead)
     
     # Trigger the automated WhatsApp message in the background
-    background_tasks.add_task(send_whatsapp_welcome, mock_lead.name, mock_lead.mobile_number)
+    background_tasks.add_task(send_whatsapp_welcome, mock_lead.name, mock_lead.mobile_number, lead_in.language or 'en')
     
     return mock_lead
 

@@ -9,6 +9,7 @@ class LeadCreate(BaseModel):
     email: Optional[EmailStr] = Field(None, example="john@example.com")
     mobile_number: str = Field(..., example="+1234567890")
     consent_given: bool = Field(True, description="Must be true to submit")
+    language: Optional[str] = Field('en', example="mr", description="User's language preference: 'mr' or 'en'")
     
 class LeadResponse(BaseModel):
     id: UUID

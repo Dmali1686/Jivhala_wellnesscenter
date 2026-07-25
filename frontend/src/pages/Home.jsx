@@ -111,7 +111,7 @@ export default function Home() {
             className="text-[2.5rem] md:text-5xl lg:text-6xl leading-tight mb-5 md:mb-6 font-bold text-[#1a1a1a] tracking-tight"
           >
             {t('home.heroTitle').split(' ').slice(0, -1).join(' ')} <br className="hidden md:block"/>
-            <span className="font-serif italic text-[var(--color-primary)] tracking-normal md:block">{t('home.heroTitle').split(' ').slice(-1)}</span>
+            <span className="hero-accent font-mr-display font-serif italic text-[var(--color-primary)] tracking-normal md:block">{t('home.heroTitle').split(' ').slice(-1)}</span>
           </motion.h1>
           
           <motion.p 

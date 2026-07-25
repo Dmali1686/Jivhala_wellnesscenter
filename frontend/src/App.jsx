@@ -1,6 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'sonner';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,13 +15,32 @@ import AdminDashboard from './pages/AdminDashboard';
 import ClientLogin from './pages/ClientLogin';
 import ClientDashboard from './pages/ClientDashboard';
 import HealthCheckup from './pages/HealthCheckup';
-import { useLocation } from 'react-router-dom';
+
+
+// Scrolls to the top of the page on every route change
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+}
 
 function AppContent() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
+  const { i18n } = useTranslation();
+  const lang = i18n.language || 'mr';
+
+  // Set the <html lang> attribute whenever language switches.
+  // This activates :lang(mr) CSS selectors for Devanagari typography.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   return (
+    <>
+      <ScrollToTop />
     <div className="min-h-screen flex flex-col bg-[#FAFAFA] text-gray-900 font-sans relative">
       <div className="relative z-10 flex flex-col min-h-screen">
         <Toaster position="top-center" richColors />
@@ -47,6 +68,7 @@ function AppContent() {
         <img src="/logo.png" alt="Background Watermark" className="w-[150%] md:w-[1400px] h-auto object-contain opacity-[0.04] grayscale mix-blend-multiply" />
       </div>
     </div>
+  </>
   );
 }
 
