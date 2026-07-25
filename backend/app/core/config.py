@@ -16,6 +16,15 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5433/jivhala_wellness"
     
+    @property
+    def safe_database_url(self) -> str:
+        url = self.DATABASE_URL
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql://", 1)
+        if url.startswith("postgresql://"):
+            url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return url
+
     # CORS — restrict to your frontend domain(s) in production
     CORS_ORIGINS: str = '["http://localhost:5173", "http://localhost:3000"]'
     
