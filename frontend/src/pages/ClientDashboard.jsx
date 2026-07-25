@@ -52,7 +52,11 @@ export default function ClientDashboard() {
         target_weight: userRes.data.target_weight || ''
       });
       const progressRes = await axios.get(`${API_BASE_URL}/api/v1/clients/me/progress`, { headers });
-      setProgress(progressRes.data);
+      if (progressRes.data && Array.isArray(progressRes.data)) {
+        setProgress(progressRes.data);
+      } else {
+        setProgress([]);
+      }
     } catch (error) {
       if (error.response?.status === 401) {
         toast.error("Session expired. Please login again.");
