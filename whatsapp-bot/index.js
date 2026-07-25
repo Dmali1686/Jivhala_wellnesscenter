@@ -4,6 +4,11 @@ const { Client, RemoteAuth } = require('whatsapp-web.js');
 const { PostgresStore } = require('wwebjs-postgres');
 const { Pool } = require('pg');
 const qrcode = require('qrcode-terminal');
+const QRCode = require('qrcode');
+
+// Store latest QR code for the /qr webpage
+let latestQR = null;
+let botReady = false;
 const { handleLeadCapture } = require('./src/leadCapture');
 
 const app = express();
@@ -15,7 +20,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // API Key for inter-service authentication
 const API_KEY = process.env.WHATSAPP_API_KEY || 'change-this-whatsapp-api-key-in-production';
@@ -77,7 +82,10 @@ const client = new Client({
 
 // Generate QR Code for authentication
 client.on('qr', (qr) => {
+    latestQR = qr;
+    botReady = false;
     console.log('\n--- SCAN THIS QR CODE WITH YOUR WHATSAPP ---');
+    console.log('\n👉 Or open your Railway URL + /qr in a browser to scan it!\n');
     qrcode.generate(qr, { small: true });
 });
 
@@ -98,7 +106,30 @@ client.on('remote_session_saved', () => {
 });
 
 client.on('ready', () => {
+    latestQR = null;
+    botReady = true;
     console.log('\n✅ WhatsApp Client is ready and connected!');
+});
+
+// ─── QR Code Webpage ──────────────────────────────────────────────────────
+app.get('/qr', async (req, res) => {
+    if (botReady) {
+        return res.send('<html><body style="background:#111;color:#0f0;display:flex;justify-content:center;align-items:center;height:100vh;font-size:2em">✅ Bot is connected! No QR needed.</body></html>');
+    }
+    if (!latestQR) {
+        return res.send('<html><body style="background:#111;color:#ff0;display:flex;justify-content:center;align-items:center;height:100vh;font-size:1.5em">⏳ Waiting for QR code... Refresh in 10 seconds.<script>setTimeout(()=>location.reload(),10000)</script></body></html>');
+    }
+    try {
+        const qrImage = await QRCode.toDataURL(latestQR, { width: 400, margin: 2 });
+        res.send(`<html><body style="background:#111;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh">
+            <h1 style="color:#fff;font-family:sans-serif">📱 Scan with WhatsApp</h1>
+            <img src="${qrImage}" style="border-radius:12px" />
+            <p style="color:#888;font-family:sans-serif">Open WhatsApp → Linked Devices → Link a Device</p>
+            <script>setTimeout(()=>location.reload(),20000)</script>
+        </body></html>`);
+    } catch (err) {
+        res.status(500).send('Failed to generate QR');
+    }
 });
 
 client.on('disconnected', (reason) => {
