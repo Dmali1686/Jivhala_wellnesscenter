@@ -56,8 +56,7 @@ const client = new Client({
         backupSyncIntervalMs: 300000 // Backup every 5 minutes
     }),
     puppeteer: {
-        // If deployed to Render via Docker, it uses PUPPETEER_EXECUTABLE_PATH.
-        // On Mac (local dev), it falls back to the hardcoded Mac path.
+        headless: true,
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (process.platform === 'darwin' ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : undefined),
         args: [
             '--no-sandbox',
@@ -66,8 +65,12 @@ const client = new Client({
             '--disable-accelerated-2d-canvas',
             '--no-first-run',
             '--no-zygote',
+            '--single-process',
             '--disable-gpu',
-            '--disable-extensions'
+            '--disable-extensions',
+            '--disable-software-rasterizer',
+            '--disable-features=site-per-process',
+            '--js-flags=--max-old-space-size=128'
         ]
     }
 });
