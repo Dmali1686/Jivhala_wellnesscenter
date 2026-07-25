@@ -33,9 +33,17 @@ function validateApiKey(req, res, next) {
 
 console.log('Initializing WhatsApp Client...');
 
+// Ensure DATABASE_URL is provided (crucial for Render deployment)
+if (!process.env.DATABASE_URL) {
+    console.error("❌ FATAL ERROR: DATABASE_URL environment variable is missing!");
+    console.error("Please add DATABASE_URL in Render Environment settings.");
+    process.exit(1);
+}
+
 // Initialize PostgreSQL connection for session storage
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://neon_admin:secret@localhost/jivhala'
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false } // Required for Neon Database / production DBs
 });
 const store = new PostgresStore({ pool });
 
