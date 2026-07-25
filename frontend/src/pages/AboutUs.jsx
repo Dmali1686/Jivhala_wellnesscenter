@@ -15,7 +15,11 @@ export default function AboutUs() {
     const fetchVlogs = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/api/v1/vlogs/`);
-        setVlogs(response.data);
+        if (response.data && Array.isArray(response.data)) {
+          setVlogs(response.data);
+        } else {
+          setVlogs([]);
+        }
       } catch (error) {
         console.error('Failed to fetch vlogs:', error);
       }

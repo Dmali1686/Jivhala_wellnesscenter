@@ -40,7 +40,11 @@ export default function AdminDashboard() {
       const response = await axios.get(`${API_BASE_URL}/api/v1/leads/`, {
         headers: getAuthHeaders(),
       });
-      setLeads(response.data);
+      if (response.data && Array.isArray(response.data)) {
+        setLeads(response.data);
+      } else {
+        setLeads([]);
+      }
     } catch (error) {
       if (error.response?.status === 401 || error.response?.status === 403) {
         toast.error('Session expired or access denied.');

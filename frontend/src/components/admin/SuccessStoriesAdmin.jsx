@@ -34,7 +34,11 @@ export default function SuccessStoriesAdmin() {
   const fetchStories = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/api/v1/stories/`);
-      setStories(response.data);
+      if (response.data && Array.isArray(response.data)) {
+        setStories(response.data);
+      } else {
+        setStories([]);
+      }
     } catch (error) {
       toast.error('Failed to fetch stories');
     } finally {
