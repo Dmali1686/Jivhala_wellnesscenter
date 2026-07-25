@@ -47,6 +47,8 @@ const pool = new Pool({
 });
 const store = new PostgresStore({ pool });
 
+console.log('PostgreSQL Store configured. Starting Client initialization...');
+
 // Initialize WhatsApp Client with RemoteAuth so session is saved in the database
 const client = new Client({
     authStrategy: new RemoteAuth({
@@ -78,6 +80,18 @@ const client = new Client({
 client.on('qr', (qr) => {
     console.log('\n--- SCAN THIS QR CODE WITH YOUR WHATSAPP ---');
     qrcode.generate(qr, { small: true });
+});
+
+client.on('loading_screen', (percent, message) => {
+    console.log(`⏳ LOADING SCREEN: ${percent}% - ${message}`);
+});
+
+client.on('authenticated', () => {
+    console.log('✅ AUTHENTICATED: WhatsApp has successfully authenticated!');
+});
+
+client.on('auth_failure', (msg) => {
+    console.error('❌ AUTHENTICATION FAILURE:', msg);
 });
 
 client.on('remote_session_saved', () => {
