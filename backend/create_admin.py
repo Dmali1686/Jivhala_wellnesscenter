@@ -14,28 +14,42 @@ async def create_admin():
 
     print("Creating admin user in database...")
     async with async_session() as session:
-        # Check if admin already exists
-        # In our schema, mobile_number is unique
+        from sqlalchemy.future import select
+        
         mobile_number = "+910000000000"
         
-        # We can just create one directly
-        admin_user = User(
-            username="Super Admin",
-            mobile_number=mobile_number,
-            password_hash=get_password_hash("admin123"),
-            role="admin"
-        )
-        
-        try:
-            session.add(admin_user)
+        # Check if admin already exists
+        result = await session.execute(select(User).where(User.mobile_number == mobile_number))
+        existing_user = result.scalars().first()
+
+        if existing_user:
+            print("User already exists. Upgrading role to admin and resetting password...")
+            existing_user.role = "admin"
+            existing_user.password_hash = get_password_hash("admin123")
             await session.commit()
             print("=========================================")
-            print("✅ ADMIN CREATED SUCCESSFULLY!")
+            print("✅ ADMIN ACCOUNT UPDATED SUCCESSFULLY!")
             print(f"Mobile Number: {mobile_number}")
             print(f"Password: admin123")
             print("=========================================")
-        except Exception as e:
-            print(f"Failed to create admin (maybe already exists?): {e}")
+        else:
+            # We can just create one directly
+            admin_user = User(
+                username="Super Admin",
+                mobile_number=mobile_number,
+                password_hash=get_password_hash("admin123"),
+                role="admin"
+            )
+            try:
+                session.add(admin_user)
+                await session.commit()
+                print("=========================================")
+                print("✅ ADMIN CREATED SUCCESSFULLY!")
+                print(f"Mobile Number: {mobile_number}")
+                print(f"Password: admin123")
+                print("=========================================")
+            except Exception as e:
+                print(f"Failed to create admin: {e}")
 
 if __name__ == "__main__":
     asyncio.run(create_admin())
