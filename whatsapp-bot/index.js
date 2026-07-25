@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, RemoteAuth } = require('whatsapp-web.js');
+const { PostgresStore } = require('wwebjs-postgres');
+const { Pool } = require('pg');
 const qrcode = require('qrcode-terminal');
 const { handleLeadCapture } = require('./src/leadCapture');
 
@@ -31,10 +33,19 @@ function validateApiKey(req, res, next) {
 
 console.log('Initializing WhatsApp Client...');
 
-// Initialize WhatsApp Client with LocalAuth so session is saved
+// Initialize PostgreSQL connection for session storage
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://neon_admin:secret@localhost/jivhala'
+});
+const store = new PostgresStore({ pool });
+
+// Initialize WhatsApp Client with RemoteAuth so session is saved in the database
 // Uses system Google Chrome — avoids "Couldn't link" errors with outdated bundled Chromium
 const client = new Client({
-    authStrategy: new LocalAuth(),
+    authStrategy: new RemoteAuth({
+        store: store,
+        backupSyncIntervalMs: 300000 // Backup every 5 minutes
+    }),
     puppeteer: {
         // If deployed to Render via Docker, it uses PUPPETEER_EXECUTABLE_PATH.
         // On Mac (local dev), it falls back to the hardcoded Mac path.
@@ -55,6 +66,10 @@ const client = new Client({
 client.on('qr', (qr) => {
     console.log('\n--- SCAN THIS QR CODE WITH YOUR WHATSAPP ---');
     qrcode.generate(qr, { small: true });
+});
+
+client.on('remote_session_saved', () => {
+    console.log('💾 WhatsApp session securely saved to PostgreSQL Database!');
 });
 
 client.on('ready', () => {
