@@ -23,6 +23,8 @@ class Settings(BaseSettings):
             url = url.replace("postgres://", "postgresql://", 1)
         if url.startswith("postgresql://"):
             url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+        if "sslmode=" in url:
+            url = url.replace("sslmode=", "ssl=")
         return url
 
     # CORS — restrict to your frontend domain(s) in production
