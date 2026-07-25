@@ -17,8 +17,21 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5433/jivhala_wellness"
     
     # CORS — restrict to your frontend domain(s) in production
-    CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
+    CORS_ORIGINS: str = '["http://localhost:5173", "http://localhost:3000"]'
     
+    @property
+    def cors_origins_list(self) -> List[str]:
+        import json
+        if isinstance(self.CORS_ORIGINS, list):
+            return self.CORS_ORIGINS
+        try:
+            parsed = json.loads(self.CORS_ORIGINS)
+            if isinstance(parsed, list):
+                return parsed
+            return [self.CORS_ORIGINS]
+        except json.JSONDecodeError:
+            return [i.strip() for i in self.CORS_ORIGINS.split(",") if i.strip()]
+            
     # WhatsApp bot inter-service API key
     WHATSAPP_BOT_API_KEY: str = "change-this-whatsapp-api-key-in-production"
     
