@@ -36,7 +36,9 @@ console.log('Initializing WhatsApp Client...');
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        // If deployed to Render via Docker, it uses PUPPETEER_EXECUTABLE_PATH.
+        // On Mac (local dev), it falls back to the hardcoded Mac path.
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (process.platform === 'darwin' ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : undefined),
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
